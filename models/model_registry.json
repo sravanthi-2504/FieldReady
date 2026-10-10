@@ -1,0 +1,41 @@
+{
+  "version": "1.1.0",
+  "crops": {
+    "maize": {
+      "status": "supported",
+      "model_available": true,
+      "model_path": "models/maize_mobilenetv2.pth",
+      "architecture": "mobilenet_v2",
+      "classes": [
+        "healthy",
+        "common_rust",
+        "northern_leaf_blight",
+        "gray_leaf_spot"
+      ],
+      "accuracy": 0.9167,
+      "macro_f1": 0.9177,
+      "latency_ms": 37.6,
+      "size_mb": 8.74
+    },
+    "banana": {
+      "status": "supported",
+      "model_available": true,
+      "model_path": "models/banana_mobilenetv2.pth",
+      "architecture": "mobilenet_v2",
+      "classes": [
+        "healthy",
+        "black_sigatoka",
+        "bacterial_wilt"
+      ],
+      "accuracy": 0.9286,
+      "macro_f1": 0.9141,
+      "latency_ms": 34.2,
+      "size_mb": 8.73
+    },
+    "cotton": {
+      "status": "extension_ready",
+      "model_available": false,
+      "note": "Architecture extension-ready. Not certified for diagnosis in this release."
+    }
+  }
+}

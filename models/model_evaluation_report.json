@@ -1,0 +1,98 @@
+{
+  "model_name": "AgriRhythm Maize Health Classifier (MobileNetV2)",
+  "architecture": "mobilenet_v2",
+  "crop": "maize",
+  "classes": [
+    "healthy",
+    "common_rust",
+    "northern_leaf_blight",
+    "gray_leaf_spot"
+  ],
+  "class_mapping": {
+    "healthy": 0,
+    "common_rust": 1,
+    "northern_leaf_blight": 2,
+    "gray_leaf_spot": 3
+  },
+  "parameters_count": 2228996,
+  "artifact_path": "models/maize_mobilenetv2.pth",
+  "artifact_size_mb": 8.74,
+  "device_tested": "CPU (Apple Silicon M-series)",
+  "held_out_test_metrics": {
+    "total_test_samples": 48,
+    "accuracy": 0.9167,
+    "macro_f1": 0.9177,
+    "per_class": {
+      "healthy": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 12
+      },
+      "common_rust": {
+        "precision": 1.0,
+        "recall": 0.9167,
+        "f1": 0.9565,
+        "support": 12
+      },
+      "northern_leaf_blight": {
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.8571,
+        "support": 12
+      },
+      "gray_leaf_spot": {
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571,
+        "support": 12
+      }
+    },
+    "confusion_matrix": [
+      [
+        12,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        11,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        9,
+        3
+      ],
+      [
+        0,
+        0,
+        0,
+        12
+      ]
+    ],
+    "confusion_matrix_labels": [
+      "healthy",
+      "common_rust",
+      "northern_leaf_blight",
+      "gray_leaf_spot"
+    ]
+  },
+  "latency_benchmark_ms": {
+    "mean_latency_ms": 37.64,
+    "p95_latency_ms": 54.9,
+    "batch_size": 1
+  },
+  "abstention_policy": {
+    "min_confidence_threshold": 0.65,
+    "description": "If maximum softmax probability < 0.65 or entropy indicates ambiguity, prediction abstains to 'uncertain'."
+  },
+  "limitations": [
+    "Trained on PlantVillage controlled-background leaf imagery.",
+    "Field performance under complex background soil/canopy clutter or shadows requires human verification.",
+    "Does not replace a physical agronomy extension inspection or laboratory culture."
+  ]
+}

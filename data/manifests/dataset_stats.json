@@ -1,0 +1,28 @@
+{
+  "dataset_name": "PlantVillage Maize Curated Subset",
+  "primary_crop": "maize",
+  "classes": [
+    "healthy",
+    "common_rust",
+    "northern_leaf_blight",
+    "gray_leaf_spot"
+  ],
+  "total_images": 320,
+  "split_counts": {
+    "train": 224,
+    "val": 48,
+    "test": 48
+  },
+  "per_class_counts": {
+    "healthy": 80,
+    "common_rust": 80,
+    "northern_leaf_blight": 80,
+    "gray_leaf_spot": 80
+  },
+  "random_seed": 42,
+  "split_ratio": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  }
+}

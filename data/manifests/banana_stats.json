@@ -1,0 +1,26 @@
+{
+  "dataset_name": "Banana Leaf Disease Field Dataset",
+  "primary_crop": "banana",
+  "classes": [
+    "healthy",
+    "black_sigatoka",
+    "bacterial_wilt"
+  ],
+  "total_images": 175,
+  "split_counts": {
+    "train": 122,
+    "val": 25,
+    "test": 28
+  },
+  "per_class_counts": {
+    "healthy": 70,
+    "black_sigatoka": 35,
+    "bacterial_wilt": 70
+  },
+  "random_seed": 42,
+  "split_ratio": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "model_name": "AgriRhythm Banana Health Classifier (MobileNetV2)",
+  "architecture": "mobilenet_v2",
+  "crop": "banana",
+  "classes": [
+    "healthy",
+    "black_sigatoka",
+    "bacterial_wilt"
+  ],
+  "class_mapping": {
+    "healthy": 0,
+    "black_sigatoka": 1,
+    "bacterial_wilt": 2
+  },
+  "parameters_count": 2227715,
+  "artifact_path": "models/banana_mobilenetv2.pth",
+  "artifact_size_mb": 8.73,
+  "device_tested": "CPU (Apple Silicon M-series)",
+  "held_out_test_metrics": {
+    "total_test_samples": 28,
+    "accuracy": 0.9286,
+    "macro_f1": 0.9141,
+    "per_class": {
+      "healthy": {
+        "precision": 0.9167,
+        "recall": 1.0,
+        "f1": 0.9565,
+        "support": 11
+      },
+      "black_sigatoka": {
+        "precision": 0.8333,
+        "recall": 0.8333,
+        "f1": 0.8333,
+        "support": 6
+      },
+      "bacterial_wilt": {
+        "precision": 1.0,
+        "recall": 0.9091,
+        "f1": 0.9524,
+        "support": 11
+      }
+    },
+    "confusion_matrix": [
+      [
+        11,
+        0,
+        0
+      ],
+      [
+        1,
+        5,
+        0
+      ],
+      [
+        0,
+        1,
+        10
+      ]
+    ],
+    "confusion_matrix_labels": [
+      "healthy",
+      "black_sigatoka",
+      "bacterial_wilt"
+    ]
+  },
+  "latency_benchmark_ms": {
+    "mean_latency_ms": 34.22,
+    "batch_size": 1
+  },
+  "abstention_policy": {
+    "min_confidence_threshold": 0.65,
+    "description": "If maximum softmax probability < 0.65, prediction abstains to 'uncertain'."
+  }
+}
