@@ -41,6 +41,42 @@ class HealthPredictionResponse(BaseModel):
     sensor_info: Optional[Dict[str, Any]] = None
     advisory: Optional[Dict[str, Any]] = None
     highlight: Optional[Dict[str, Any]] = None
+    environmental_context: Optional[Dict[str, Any]] = None
+    pesticide_recommendation: Optional[Dict[str, Any]] = None
+    lookalike_comparison: Optional[Dict[str, Any]] = None
+
+class LeafAssessmentItem(BaseModel):
+    leaf_index: int
+    filename: str
+    is_usable: bool
+    rejection_reason: Optional[str] = None
+    quality: Optional[Dict[str, Any]] = None
+    predicted_class: Optional[str] = None
+    confidence: Optional[float] = None
+    is_uncertain: Optional[bool] = None
+    lesion_pct: Optional[float] = None
+    severity_stage: Optional[str] = None
+    highlight: Optional[Dict[str, Any]] = None
+
+class PlantAssessmentResponse(BaseModel):
+    plant_id: str
+    crop: str
+    total_leaves_submitted: int
+    valid_leaves_count: int
+    excluded_leaves_count: int
+    plant_level_prediction: str
+    plant_level_confidence: float
+    is_uncertain: bool
+    has_disagreement: bool
+    disagreement_summary: Optional[str] = None
+    class_vote_breakdown: Dict[str, int]
+    average_class_probabilities: Dict[str, float]
+    leaf_assessments: List[LeafAssessmentItem]
+    pesticide_recommendation: Optional[Dict[str, Any]] = None
+    lookalike_comparison: Optional[Dict[str, Any]] = None
+    management_guidance: Optional[Dict[str, Any]] = None
+    source_mode: str
+    latency_ms: float
 
 class WeatherResponse(BaseModel):
     temperature_c: float

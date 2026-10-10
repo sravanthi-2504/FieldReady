@@ -39,8 +39,20 @@ class SensorIn(BaseModel):
     soil_moisture_pct: Optional[float] = Field(None, ge=0, le=100)
 
 
-def get_latest(field_id: Optional[str]) -> Optional[SensorReading]:
-    return _STORE.get(field_id) if field_id else None
+def get_latest(field_id: Optional[str] = None) -> Optional[SensorReading]:
+    if field_id and field_id in _STORE:
+        return _STORE[field_id]
+    if not field_id and _STORE:
+        # Return most recent reading across all fields
+        return max(_STORE.values(), key=lambda r: r.taken_at or 0.0)
+    return None
+
+
+def get_latest_field_id() -> Optional[str]:
+    if not _STORE:
+        return None
+    latest_item = max(_STORE.items(), key=lambda kv: kv[1].taken_at or 0.0)
+    return latest_item[0]
 
 
 @router.post("/sensor")
@@ -59,9 +71,35 @@ def post_sensor(body: SensorIn, x_sensor_key: Optional[str] = Header(None)):
     return {"ok": True}
 
 
+@router.get("/sensor")
+@router.get("/sensor/latest")
+def read_latest_sensor(field_id: Optional[str] = None):
+    r = get_latest(field_id)
+    if r is None:
+        return {
+            "status": "offline",
+            "message": "No sensor readings available",
+            "active_fields": list(_STORE.keys()),
+            "reading": None
+        }
+    return {
+        "status": "online" if r.usable() else "stale",
+        "field_id": field_id or get_latest_field_id(),
+        "temperature_c": r.temperature_c,
+        "humidity_pct": r.humidity_pct,
+        "leaf_wetness_hours_24h": r.leaf_wetness_hours_24h,
+        "soil_moisture_pct": r.soil_moisture_pct,
+        "taken_at": r.taken_at,
+        "source": r.source,
+        "age_hours": round(r.age_hours(), 2) if r.age_hours() is not None else None,
+        "usable": r.usable(),
+        "active_fields": list(_STORE.keys())
+    }
+
+
 @router.get("/sensor/{field_id}")
 def read_sensor(field_id: str):
-    r = get_latest(field_id)
+    r = _STORE.get(field_id)
     if r is None:
         raise HTTPException(status_code=404, detail="no reading for this field")
     return {
@@ -69,3 +107,4 @@ def read_sensor(field_id: str):
         "age_hours": round(r.age_hours(), 2) if r.age_hours() is not None else None,
         "usable": r.usable()
     }
+

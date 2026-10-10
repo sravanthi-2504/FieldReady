@@ -225,7 +225,7 @@ export const App: React.FC = () => {
     setAssessmentResult(undefined);
     let result: AssessmentResult;
     try {
-      result = await apiService.predictCropHealth(capturedBlob, cropToUse, false);
+      result = await apiService.predictCropHealth(capturedBlob, cropToUse, false, selectedField?.id);
     } catch (err: any) {
       // Show the real reason (server unreachable, crop-verification gate, weights not loaded...) instead of a fake result
       setAssessmentError(err?.message || 'Server unreachable');
@@ -248,6 +248,96 @@ export const App: React.FC = () => {
       }
     }
   };
+
+  // 8b. Multi-leaf plant assessment
+  const handleProceedPlantAssessment = async (leaves: Array<{ blob: Blob | File; url: string }>) => {
+    transitionTo('ASSESSMENT');
+    setIsAssessmentLoading(true);
+    setAssessmentError(null);
+    setAssessmentResult(undefined);
+
+    try {
+      const files = leaves.map(l => l.blob);
+      const plantRes = await apiService.assessPlantLeaves(files, selectedCrop, undefined, selectedField?.id);
+
+      const DISEASE_NAMES_MAP: Record<string, { en: string; te: string; hi: string }> = {
+        healthy: { en: "Healthy Crop Leaf", te: "ఆరోగ్యకరమైన ఆకు", hi: "स्वस्थ पत्ती" },
+        common_rust: { en: "Common Rust (Puccinia sorghi)", te: "మొక్కజొన్న కుంకుమ తెగులు (కామన్ రస్ట్)", hi: "सामान्य रतुआ (कॉमन रस्ट)" },
+        southern_rust: { en: "Southern Rust (Puccinia polysora)", te: "సదరన్ రస్ట్ (దక్షిణ కుంకుమ తెగులు)", hi: "दक्षिणी रतुआ (सदर्न रस्ट)" },
+        northern_leaf_blight: { en: "Northern Leaf Blight (Exserohilum turcicum)", te: "టర్సికమ్ ఆకు ఎండు తెగులు", hi: "उत्तरी पत्ती झुलसा" },
+        gray_leaf_spot: { en: "Gray Leaf Spot (Cercospora zeae-maydis)", te: "బూడిద రంగు మచ్చ తెగులు", hi: "ग्रे लीफ स्पॉट" },
+        black_sigatoka: { en: "Black Sigatoka (Pseudocercospora fijiensis)", te: "నల్ల సిగటోకా తెగులు", hi: "ब्लैक सिगाटोका" },
+        bacterial_wilt: { en: "Bacterial Wilt (Xanthomonas vasicola)", te: "బ్యాక్టీరియల్ విల్ట్", hi: "जीवाणु म्लानि" }
+      };
+
+      const predKey = plantRes.plant_level_prediction;
+      const dispName = DISEASE_NAMES_MAP[predKey] || {
+        en: predKey.replace(/_/g, ' '),
+        te: predKey.replace(/_/g, ' '),
+        hi: predKey.replace(/_/g, ' ')
+      };
+
+      const mapped: AssessmentResult = {
+        crop: plantRes.crop,
+        predicted_class: predKey,
+        display_name: dispName,
+        confidence: plantRes.plant_level_confidence,
+        is_uncertain: plantRes.is_uncertain,
+        uncertainty_reason: plantRes.is_uncertain ? {
+          en: plantRes.disagreement_summary || "Plant assessment is uncertain or conflicting symptoms were detected across leaves.",
+          te: plantRes.disagreement_summary || "ఆకుల నడుమ తేడాలు ఉన్నాయి లేదా ఫలితం అనిశ్చితంగా ఉంది.",
+          hi: plantRes.disagreement_summary || "पत्तियों में लक्षण भिन्न हैं या परिणाम अनिश्चित है।"
+        } : null,
+        all_probabilities: Object.entries(plantRes.average_class_probabilities).map(([lbl, p]) => ({
+          label: lbl,
+          name: lbl.replace(/_/g, ' '),
+          probability: p,
+          percentage: Math.round(p * 100)
+        })),
+        model_version: 'multileaf_consensus_v1.0',
+        source_mode: plantRes.source_mode as any,
+        latency_ms: plantRes.latency_ms,
+        differential_possibilities: [
+          {
+            condition: "Southern Rust (Puccinia polysora)",
+            similarity: "Similar orange/brown pustules on leaves.",
+            differentiation: "Check if pustules are on both leaf sides (common rust) or primarily upper side (southern rust)."
+          }
+        ],
+        management_guidance: {
+          summary: plantRes.disagreement_summary || "Plant multi-leaf evaluation complete.",
+          cultural_actions: [
+            "Monitor upper canopy around silking stage.",
+            "Avoid excessive overhead sprinkler irrigation that lengthens leaf wetness.",
+            "Select certified rust-resistant hybrids for subsequent plantings."
+          ],
+          chemical_advice: "Follow farm-hygiene and cultural measures only. For chemical advice, consult your local Agricultural Officer or KVK.",
+          official_source: "ICAR-IIMR & CIBRC Integrated Disease Management"
+        },
+        highlight: plantRes.leaf_assessments.find(l => l.highlight)?.highlight || null,
+        pesticide_recommendation: plantRes.pesticide_recommendation,
+        lookalike_comparison: plantRes.lookalike_comparison,
+        plant_assessment: plantRes
+      };
+
+      setAssessmentResult(mapped);
+
+      const conditionName = dispName[currentLanguage] || dispName.en;
+      const confPercent = Math.round(plantRes.plant_level_confidence * 100);
+      if (currentLanguage === 'te') {
+        assistant.speak(`మొక్క సమగ్ర నిర్ధారణ పూర్తయింది. ఏకాభిప్రాయ ఫలితం: ${conditionName}. విశ్వసనీయత: ${confPercent} శాతం.`, true);
+      } else if (currentLanguage === 'hi') {
+        assistant.speak(`पौधे का समग्र मूल्यांकन पूर्ण हुआ। आम सहमति परिणाम: ${conditionName}। विश्वास: ${confPercent} प्रतिशत।`, true);
+      } else {
+        assistant.speak(`Plant-level consensus complete. Verdict: ${conditionName}. Confidence: ${confPercent} percent.`, true);
+      }
+    } catch (err: any) {
+      setAssessmentError(err?.message || 'Plant assessment failed');
+    } finally {
+      setIsAssessmentLoading(false);
+    }
+  };
+
 
   // 9. Save Inspection Record
   const handleSaveInspection = async () => {
@@ -362,7 +452,9 @@ export const App: React.FC = () => {
             onImageSelected={handleImageSelected}
             onBack={() => transitionTo('CROP_SELECTION')}
             onProceed={handleProceedToQualityCheck}
+            onProceedPlantAssessment={handleProceedPlantAssessment}
           />
+
         )}
 
         {currentState === 'IMAGE_QUALITY_CHECK' && (

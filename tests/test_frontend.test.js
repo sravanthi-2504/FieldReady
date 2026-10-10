@@ -154,4 +154,104 @@ test('FieldSelectScreen provides unambiguous selection button and rapid workflow
   assert.ok(code.includes('handleCreateField'), 'Must implement handleCreateField handler');
 });
 
+test('WeatherSensorsScreen implements physical ESP32 telemetry status and dynamic live indicators', () => {
+  const screenPath = path.resolve('src/screens/WeatherSensorsScreen.tsx');
+  assert.ok(fs.existsSync(screenPath), 'WeatherSensorsScreen.tsx must exist');
+  const code = fs.readFileSync(screenPath, 'utf8');
+
+  assert.ok(code.includes('hasPhysicalTelemetry'), 'Must detect if physical telemetry is streaming');
+  assert.ok(code.includes('ESP32 Hardware Node Online'), 'Must render live ESP32 status banner');
+  assert.ok(code.includes('PHYSICAL ESP32 TELEMETRY'), 'Must display physical telemetry provenance badge');
+  assert.ok(code.includes('Hardware Node Architecture'), 'Must describe hardware architecture');
+});
+
+test('AssessmentScreen integrates Microclimate & Field Environmental Context without altering diagnosis', () => {
+  const screenPath = path.resolve('src/screens/AssessmentScreen.tsx');
+  assert.ok(fs.existsSync(screenPath), 'AssessmentScreen.tsx must exist');
+  const code = fs.readFileSync(screenPath, 'utf8');
+
+  assert.ok(code.includes('assessment.environmental_context'), 'Must check environmental_context in assessment');
+  assert.ok(code.includes('Microclimate & Environmental Context'), 'Must render environmental context title');
+  assert.ok(code.includes('ESP32 Live'), 'Must render live ESP32 badge');
+  assert.ok(code.includes('without overriding visual leaf diagnosis') || code.includes('without altering visual leaf diagnosis'), 'Must state agronomic rationale disclaimer');
+});
+
+test('API service forwards field ID for sensor fusion during diagnosis', () => {
+  const apiPath = path.resolve('src/services/api.ts');
+  assert.ok(fs.existsSync(apiPath), 'api.ts must exist');
+  const code = fs.readFileSync(apiPath, 'utf8');
+
+  assert.ok(code.includes("formData.append('field_id', fieldId)"), 'Must pass field_id to /api/vision/predict');
+  assert.ok(code.includes("formData.append('field_confirmed'"), 'Must pass field_confirmed to /api/vision/predict');
+});
+
+test('AssessmentScreen implements verified pesticide recommendations, lookalike differentiation, and multi-leaf summary', () => {
+  const screenPath = path.resolve('src/screens/AssessmentScreen.tsx');
+  assert.ok(fs.existsSync(screenPath), 'AssessmentScreen.tsx must exist');
+  const code = fs.readFileSync(screenPath, 'utf8');
+
+  // Multi-leaf plant assessment card
+  assert.ok(code.includes('assessment.plant_assessment'), 'Must check assessment.plant_assessment');
+  assert.ok(code.includes('plant_disagreement_alert'), 'Must render disagreement alert when leaves disagree');
+  assert.ok(code.includes('total_leaves_submitted'), 'Must display total submitted leaves metric');
+
+  // Lookalike rust card
+  assert.ok(code.includes('lookalike_heading'), 'Must render lookalike comparison heading');
+  assert.ok(code.includes('lookalike_common_rust'), 'Must compare Common Rust (Puccinia sorghi)');
+  assert.ok(code.includes('lookalike_southern_rust'), 'Must compare Southern Rust (Puccinia polysora)');
+  assert.ok(code.includes('lookalike_rub_test'), 'Must provide diagnostic rub test');
+
+  // Verified Pesticide card
+  assert.ok(code.includes('pesticide_heading'), 'Must render verified pesticide heading');
+  assert.ok(code.includes('pesticide_statutory_warning'), 'Must render statutory label warning');
+  assert.ok(code.includes('pesticide_dose_per_liter'), 'Must show dose per liter');
+  assert.ok(code.includes('pesticide_rate_per_acre'), 'Must show rate per acre');
+  assert.ok(code.includes('pesticide_phi'), 'Must show pre-harvest interval');
+  assert.ok(code.includes('pesticide_rei'), 'Must show re-entry interval');
+  assert.ok(code.includes('pesticide_ppe'), 'Must show required PPE');
+});
+
+test('CaptureScreen supports multi-leaf plant capture and whole-plant assessment mode', () => {
+  const screenPath = path.resolve('src/screens/CaptureScreen.tsx');
+  assert.ok(fs.existsSync(screenPath), 'CaptureScreen.tsx must exist');
+  const code = fs.readFileSync(screenPath, 'utf8');
+
+  assert.ok(code.includes('isMultiLeafMode'), 'Must implement multi-leaf mode state');
+  assert.ok(code.includes('plantLeaves'), 'Must track plantLeaves array');
+  assert.ok(code.includes('onProceedPlantAssessment'), 'Must support onProceedPlantAssessment callback');
+  assert.ok(code.includes('plant_mode_single'), 'Must render single leaf tab');
+  assert.ok(code.includes('plant_mode_multi'), 'Must render multi leaf plant tab');
+});
+
+test('API service implements multi-leaf plant assessment and pesticide lookups', () => {
+  const apiPath = path.resolve('src/services/api.ts');
+  assert.ok(fs.existsSync(apiPath), 'api.ts must exist');
+  const code = fs.readFileSync(apiPath, 'utf8');
+
+  assert.ok(code.includes('assessPlantLeaves'), 'Must implement assessPlantLeaves method');
+  assert.ok(code.includes('getPesticideRecommendation'), 'Must implement getPesticideRecommendation method');
+  assert.ok(code.includes('getLookalikeComparison'), 'Must implement getLookalikeComparison method');
+  assert.ok(code.includes('/vision/assess-plant'), 'Must post to /vision/assess-plant');
+  assert.ok(code.includes('/pesticides/recommendation'), 'Must query /pesticides/recommendation');
+});
+
+test('Verified maize pesticide catalog contains valid CIBRC registered uses', () => {
+  const catalogPath = path.resolve('data/maize_pesticide_catalog.json');
+  assert.ok(fs.existsSync(catalogPath), 'maize_pesticide_catalog.json must exist');
+  const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+
+  assert.strictEqual(catalog.country, 'India', 'Must target India regulatory framework');
+  assert.ok(catalog.diseases.common_rust, 'Must have common_rust entry');
+  assert.ok(catalog.diseases.southern_rust, 'Must have southern_rust entry');
+  assert.ok(catalog.diseases.healthy, 'Must have healthy crop entry');
+
+  const rustChems = catalog.diseases.common_rust.chemical_interventions;
+  assert.ok(rustChems.length > 0, 'Must specify registered chemical interventions for common rust');
+  assert.ok(rustChems.some((c) => c.product_name.includes('Mancozeb')), 'Must include CIBRC registered Mancozeb');
+  assert.ok(rustChems[0].pre_harvest_interval_days !== undefined, 'Must specify PHI');
+  assert.ok(rustChems[0].re_entry_interval_hours !== undefined, 'Must specify REI');
+  assert.ok(rustChems[0].ppe_requirements.length > 0, 'Must specify PPE requirements');
+});
+
+
 

@@ -18,6 +18,7 @@ from typing import Dict, Any, List, Optional
 from pathlib import Path
 
 CLASSES = ["healthy", "common_rust", "northern_leaf_blight", "gray_leaf_spot"]
+CLASSES_5 = ["healthy", "common_rust", "southern_rust", "northern_leaf_blight", "gray_leaf_spot"]
 
 CLASS_DISPLAY_NAMES = {
     "healthy": {
@@ -29,6 +30,11 @@ CLASS_DISPLAY_NAMES = {
         "en": "Common Rust (Puccinia sorghi)",
         "te": "మొక్కజొన్న కుంకుమ తెగులు (కామన్ రస్ట్)",
         "hi": "सामान्य रतुआ (कॉमन रस्ट)"
+    },
+    "southern_rust": {
+        "en": "Southern Rust (Puccinia polysora)",
+        "te": "సదరన్ రస్ట్ (దక్షిణ కుంకుమ తెగులు)",
+        "hi": "दक्षिणी रतुआ (सदर्न रस्ट)"
     },
     "northern_leaf_blight": {
         "en": "Northern Corn Leaf Blight (Exserohilum turcicum)",
@@ -46,8 +52,8 @@ DIFFERENTIAL_CAUSES = {
     "common_rust": [
         {
             "condition": "Southern Rust (Puccinia polysora)",
-            "similarity": "Produces similar orange/brown pustules, but tends to occur mainly on upper leaf surfaces under high heat.",
-            "differentiation": "Check if pustules are on both leaf surfaces (common rust) or only upper surface (southern rust)."
+            "similarity": "Produces orange-brown fungal pustules on leaf surface.",
+            "differentiation": "Common rust pustules appear on BOTH upper and lower leaf surfaces and favor cool weather (16-25°C). Southern rust pustules are smaller, circular, golden-orange, and densely clustered on the UPPER leaf surface under hot conditions (>27°C)."
         },
         {
             "condition": "Physoderma Brown Spot",
@@ -58,6 +64,18 @@ DIFFERENTIAL_CAUSES = {
             "condition": "Pesticide Spray Burn / Fertilizer Scorch",
             "similarity": "Localized speckling or necrosis.",
             "differentiation": "Spray burn does not produce powdery fungal spores when rubbed with a finger."
+        }
+    ],
+    "southern_rust": [
+        {
+            "condition": "Common Rust (Puccinia sorghi)",
+            "similarity": "Produces cinnamon-brown fungal pustules.",
+            "differentiation": "Common rust pustules are larger, oval, darker brown, and prominent on the underside of leaves; southern rust pustules are tiny, golden-orange, and restricted to the upper surface."
+        },
+        {
+            "condition": "Southern Corn Leaf Blight (Bipolaris maydis)",
+            "similarity": "Parallel leaf lesions under warm, humid weather.",
+            "differentiation": "Southern blight produces elongated rectangular tan lesions, not raised powdery pustules."
         }
     ],
     "northern_leaf_blight": [
@@ -438,6 +456,7 @@ class MaizePredictor:
         # Resolve relative to the project root, not the folder uvicorn was started from
         self.weights_path = Path(weights_path) if weights_path else Path(__file__).resolve().parents[3] / "models" / "maize_mobilenetv2.pth"
         self.device = torch.device("cpu")
+        self.classes = CLASSES
         self.model = None
         self.is_loaded = False
         self.transform = transforms.Compose([
@@ -450,19 +469,22 @@ class MaizePredictor:
 
     def load_model(self):
         try:
-            model = models.mobilenet_v2(weights=None)
-            in_features = model.classifier[1].in_features
-            model.classifier = nn.Sequential(
-                nn.Dropout(p=0.2),
-                nn.Linear(in_features, len(CLASSES))
-            )
             if self.weights_path.exists():
                 state_dict = torch.load(self.weights_path, map_location=self.device)
+                out_classes = state_dict["classifier.1.bias"].shape[0] if "classifier.1.bias" in state_dict else len(CLASSES)
+                self.classes = CLASSES_5 if out_classes == 5 else CLASSES
+
+                model = models.mobilenet_v2(weights=None)
+                in_features = model.classifier[1].in_features
+                model.classifier = nn.Sequential(
+                    nn.Dropout(p=0.2),
+                    nn.Linear(in_features, len(self.classes))
+                )
                 model.load_state_dict(state_dict)
                 model.eval()
                 self.model = model
                 self.is_loaded = True
-                print(f"Loaded maize MobileNetV2 weights from {self.weights_path}")
+                print(f"Loaded maize MobileNetV2 weights ({len(self.classes)} classes) from {self.weights_path}")
             else:
                 print(f"Warning: Model weights not found at {self.weights_path}. Running in demo fallback mode.")
         except Exception as e:
@@ -499,7 +521,7 @@ class MaizePredictor:
             latency_ms = (time.perf_counter() - t0) * 1000.0
 
             pred_idx = int(probs.argmax())
-            pred_class = CLASSES[pred_idx]
+            pred_class = self.classes[pred_idx]
             max_prob = float(probs[pred_idx])
 
             # Abstention & Uncertainty Handling
@@ -524,10 +546,10 @@ class MaizePredictor:
                 }
 
             prob_list = []
-            for i, c in enumerate(CLASSES):
+            for i, c in enumerate(self.classes):
                 prob_list.append({
                     "label": c,
-                    "name": CLASS_DISPLAY_NAMES[c]["en"],
+                    "name": CLASS_DISPLAY_NAMES.get(c, {}).get("en", c),
                     "probability": round(float(probs[i]), 4),
                     "percentage": round(float(probs[i]) * 100, 1)
                 })

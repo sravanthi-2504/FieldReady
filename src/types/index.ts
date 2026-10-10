@@ -151,7 +151,111 @@ export interface AssessmentResult {
     names_products_or_doses: boolean;
   };
   highlight?: Highlight | null;
+  environmental_context?: {
+    temperature_c?: number | null;
+    humidity_pct?: number | null;
+    leaf_wetness_hours_24h?: number | null;
+    soil_moisture_pct?: number | null;
+    source?: string;
+    sensor_status?: 'online' | 'offline';
+    age_hours?: number | null;
+    favourability_score?: number | null;
+    weather_favourable?: boolean;
+  };
+  pesticide_recommendation?: PesticideRecommendation | null;
+  lookalike_comparison?: LookalikeComparison | null;
+  plant_assessment?: PlantAssessmentResponse | null;
 }
+
+export interface ChemicalIntervention {
+  id: string;
+  product_name: string;
+  active_ingredient: string;
+  category: string;
+  registration_status: 'registered' | 'extension_recommended';
+  verification_source: string;
+  source_url?: string;
+  recommended_rate: string;
+  rate_per_acre: string;
+  application_method: string;
+  application_timing: string;
+  growth_stage_restrictions?: string;
+  pre_harvest_interval_days?: number;
+  re_entry_interval_hours?: number;
+  ppe_requirements: string[];
+  environmental_precautions?: string;
+}
+
+export interface PesticideRecommendation {
+  disease: string;
+  disease_name?: LocalizedText;
+  scientific_name?: string;
+  symptom_distinction?: LocalizedText;
+  recommendation_status: 'verified' | 'extension_recommended' | 'no_pesticide_required' | 'withheld_uncertain' | 'no_verified_recommendation';
+  message: LocalizedText;
+  chemical_interventions: ChemicalIntervention[];
+  integrated_disease_management: string[];
+  source_authority?: string;
+  regulatory_framework?: string;
+  last_reviewed_date?: string;
+  disclaimer?: string;
+}
+
+export interface LookalikePathogen {
+  key: string;
+  scientific_name: string;
+  common_name: LocalizedText;
+  pustule_color: LocalizedText;
+  pustule_shape: LocalizedText;
+  canopy_distribution: LocalizedText;
+  temperature_optimum: string;
+  humidity_requirement: string;
+  seasonality: string;
+  spore_morphology: string;
+}
+
+export interface LookalikeComparison {
+  comparison_title: LocalizedText;
+  pathogen_a: LookalikePathogen;
+  pathogen_b: LookalikePathogen;
+  diagnostic_field_tips: string[];
+}
+
+export interface LeafAssessmentItem {
+  leaf_index: number;
+  filename: string;
+  is_usable: boolean;
+  rejection_reason?: string | null;
+  quality?: any;
+  predicted_class?: string | null;
+  confidence?: number | null;
+  is_uncertain?: boolean | null;
+  lesion_pct?: number | null;
+  severity_stage?: string | null;
+  highlight?: Highlight | null;
+}
+
+export interface PlantAssessmentResponse {
+  plant_id: string;
+  crop: string;
+  total_leaves_submitted: number;
+  valid_leaves_count: number;
+  excluded_leaves_count: number;
+  plant_level_prediction: string;
+  plant_level_confidence: number;
+  is_uncertain: boolean;
+  has_disagreement: boolean;
+  disagreement_summary?: string | null;
+  class_vote_breakdown: Record<string, number>;
+  average_class_probabilities: Record<string, number>;
+  leaf_assessments: LeafAssessmentItem[];
+  pesticide_recommendation?: PesticideRecommendation | null;
+  lookalike_comparison?: LookalikeComparison | null;
+  management_guidance?: any;
+  source_mode: string;
+  latency_ms: number;
+}
+
 
 export interface Highlight {
   image_data_url: string;

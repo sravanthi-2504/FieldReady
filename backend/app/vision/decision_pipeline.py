@@ -62,27 +62,47 @@ def run_decision_pipeline(
     field_confirmed: bool = False,
     lookup: Optional[Callable[[str], Tuple[Dict[str, str], Dict[str, Any]]]] = None,
 ) -> Dict[str, Any]:
-    # 1) image probabilities -> fused with sensor weather
+    # 1) image probabilities -> fused with sensor weather for risk context
     probs = {p["label"]: p["probability"] for p in result.get("all_probabilities", [])}
     fused, info = fuse(probs, sensor) if probs else (probs, {"sensor_used": False, "reason": "no probabilities"})
     result["sensor_info"] = info
     result["sensor_fusion"] = info
 
+    # Attach fused probabilities as context without altering model's visual prediction (Phase 8 requirement)
     if probs and info.get("sensor_used"):
-        new_cls = max(fused, key=fused.get)
         result["image_only_class"] = result.get("predicted_class")
         result["image_only_confidence"] = result.get("confidence")
         for p in result["all_probabilities"]:
-            p["image_probability"] = p["probability"]
-            p["probability"] = round(fused[p["label"]], 4)
-            p["percentage"] = round(fused[p["label"]] * 100, 1)
-        result["predicted_class"] = new_cls
-        result["confidence"] = round(fused[new_cls], 4)
-        if result["confidence"] < CONFIDENT:
-            result["is_uncertain"] = True
-        if new_cls != result["image_only_class"] and lookup is not None:
-            result["display_name"], result["management_guidance"] = lookup(new_cls)
-            result["class_changed_by_sensor"] = True
+            p["fused_probability"] = round(fused.get(p["label"], p["probability"]), 4)
+
+    # 1b) Build environmental context for UI and agronomic explanation
+    pred_cls = result.get("predicted_class", "healthy")
+    fav_score = (info.get("favourability") or {}).get(pred_cls)
+    if sensor is not None and sensor.usable():
+        result["environmental_context"] = {
+            "temperature_c": sensor.temperature_c,
+            "humidity_pct": sensor.humidity_pct,
+            "leaf_wetness_hours_24h": sensor.leaf_wetness_hours_24h,
+            "soil_moisture_pct": sensor.soil_moisture_pct,
+            "source": sensor.source,
+            "sensor_status": "online",
+            "age_hours": round(sensor.age_hours(), 2) if sensor.age_hours() is not None else 0.0,
+            "favourability_score": round(fav_score, 2) if fav_score is not None else None,
+            "weather_favourable": bool(fav_score is not None and fav_score >= 0.5)
+        }
+    else:
+        result["environmental_context"] = {
+            "temperature_c": None,
+            "humidity_pct": None,
+            "leaf_wetness_hours_24h": None,
+            "soil_moisture_pct": None,
+            "source": "none",
+            "sensor_status": "offline",
+            "age_hours": None,
+            "favourability_score": None,
+            "weather_favourable": False
+        }
+
 
     # 2) damage stage + stage-specific cultural advice
     result = enrich_with_stage(result, image_bytes)
@@ -106,7 +126,23 @@ def run_decision_pipeline(
         result.get("stage_info"), fav, bool(info.get("sensor_used")), field_confirmed,
     )
 
-    # 4) never ship product names or doses
+    # 4) never ship product names or doses in general guidance
     if "management_guidance" in result:
         result["management_guidance"] = strip_chemicals(result["management_guidance"])
+
+    # 5) verified, rule-based pesticide recommendation & lookalike rust differentiation
+    try:
+        from backend.app.services.pesticide_recommendation import get_pesticide_recommendation, get_lookalike_comparison
+        result["pesticide_recommendation"] = get_pesticide_recommendation(
+            str(pred), bool(result.get("is_uncertain", False))
+        )
+        if str(pred) in ("common_rust", "southern_rust"):
+            result["lookalike_comparison"] = get_lookalike_comparison("common_rust", "southern_rust")
+        else:
+            result["lookalike_comparison"] = None
+    except Exception as e:
+        print(f"Warning: Failed to attach pesticide recommendation: {e}")
+        result["pesticide_recommendation"] = None
+        result["lookalike_comparison"] = None
+
     return result

@@ -123,7 +123,51 @@ export interface AssessmentResult {
   differential_possibilities: DifferentialPossibility[];
   management_guidance: ManagementGuidance;
   note?: string;
+  lesion_pct?: number;
+  severity_stage?: string;
+  stage_info?: {
+    lesion_percent?: number | null;
+    yellow_percent?: number | null;
+    leaf_fraction?: number | null;
+    stage?: string;
+    stage_label?: LocalizedText;
+    reliable?: boolean;
+  };
+  sensor_fusion?: {
+    sensor_used: boolean;
+    reason?: string;
+    favourability?: Record<string, number | null>;
+    reading_age_hours?: number | null;
+  };
+  advisory?: {
+    level: 'no_action' | 'recheck' | 'cultural_only' | 'consult_officer';
+    message: LocalizedText;
+    evidence: {
+      image_confident: boolean;
+      damage_measured: boolean;
+      weather_favourable: boolean;
+      field_confirmed: boolean;
+    };
+    still_needed_for_officer_consult: string[];
+    names_products_or_doses: boolean;
+  };
+  highlight?: any | null;
+  environmental_context?: {
+    temperature_c?: number | null;
+    humidity_pct?: number | null;
+    leaf_wetness_hours_24h?: number | null;
+    soil_moisture_pct?: number | null;
+    source?: string;
+    sensor_status?: 'online' | 'offline';
+    age_hours?: number | null;
+    favourability_score?: number | null;
+    weather_favourable?: boolean;
+  };
+  pesticide_recommendation?: any | null;
+  lookalike_comparison?: any | null;
+  plant_assessment?: any | null;
 }
+
 
 export interface DifferentialAnswers {
   onset_time?: string;
@@ -177,3 +221,13 @@ export interface SensorReading {
   provenance_tag: string;
   disclaimer: string;
 }
+
+export type {
+  ChemicalIntervention,
+  PesticideRecommendation,
+  LookalikePathogen,
+  LookalikeComparison,
+  LeafAssessmentItem,
+  PlantAssessmentResponse
+} from './types/index';
+

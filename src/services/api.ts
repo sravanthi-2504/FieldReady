@@ -3,7 +3,18 @@
  * Handles requests to backend endpoints with automatic offline fallbacks.
  */
 
-import { QualityResult, AssessmentResult, WeatherData, SensorReading, FieldRecord, InspectionRecord, CropVerifyResult } from '../types';
+import {
+  QualityResult,
+  AssessmentResult,
+  WeatherData,
+  SensorReading,
+  FieldRecord,
+  InspectionRecord,
+  CropVerifyResult,
+  PlantAssessmentResponse,
+  PesticideRecommendation,
+  LookalikeComparison
+} from '../types';
 
 const getApiBase = (): string => {
   const envBase = (import.meta as any).env?.VITE_API_BASE;
@@ -89,17 +100,26 @@ export const apiService = {
     }
   },
 
-  async predictCropHealth(file: File | Blob, crop: string = 'maize', demoMode: boolean = false): Promise<AssessmentResult> {
+  async predictCropHealth(
+    file: File | Blob,
+    crop: string = 'maize',
+    demoMode: boolean = false,
+    fieldId?: string,
+    fieldConfirmed: boolean = false
+  ): Promise<AssessmentResult> {
     const formData = new FormData();
     formData.append('image', file, 'leaf.jpg');
     formData.append('crop', crop);
     formData.append('demo_mode', String(demoMode));
+    if (fieldId) formData.append('field_id', fieldId);
+    if (fieldConfirmed) formData.append('field_confirmed', String(fieldConfirmed));
 
     try {
       const resp = await fetch(`${API_BASE}/vision/predict`, {
         method: 'POST',
         body: formData
       });
+
       if (!resp.ok) {
         const errorData = await resp.json().catch(() => ({}));
         const detail = typeof errorData.detail === 'string'
@@ -336,5 +356,62 @@ export const apiService = {
       console.warn('Sync failed, will retry later:', err);
       return false;
     }
+  },
+
+  async assessPlantLeaves(
+    files: (File | Blob)[],
+    crop: string = 'maize',
+    plantId?: string,
+    fieldId?: string,
+    location: string = 'India',
+    demoMode: boolean = false
+  ): Promise<PlantAssessmentResponse> {
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append('images', file, `leaf_${index + 1}.jpg`);
+    });
+    formData.append('crop', crop);
+    formData.append('demo_mode', String(demoMode));
+    if (plantId) formData.append('plant_id', plantId);
+    if (fieldId) formData.append('field_id', fieldId);
+    formData.append('location', location);
+
+    const resp = await fetch(`${API_BASE}/vision/assess-plant`, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!resp.ok) {
+      const errorData = await resp.json().catch(() => ({}));
+      const detail = typeof errorData.detail === 'string'
+        ? errorData.detail
+        : (errorData.detail ? JSON.stringify(errorData.detail) : '');
+      throw new Error(detail || `Plant assessment returned ${resp.status}`);
+    }
+    return await resp.json();
+  },
+
+  async getPesticideRecommendation(
+    disease: string,
+    isUncertain: boolean = false,
+    location: string = 'India'
+  ): Promise<PesticideRecommendation> {
+    const resp = await fetch(
+      `${API_BASE}/pesticides/recommendation?disease=${encodeURIComponent(disease)}&is_uncertain=${isUncertain}&location=${encodeURIComponent(location)}`
+    );
+    if (!resp.ok) throw new Error(`Pesticide API returned ${resp.status}`);
+    return await resp.json();
+  },
+
+  async getLookalikeComparison(
+    diseaseA: string = 'common_rust',
+    diseaseB: string = 'southern_rust'
+  ): Promise<LookalikeComparison> {
+    const resp = await fetch(
+      `${API_BASE}/pesticides/lookalike?disease_a=${encodeURIComponent(diseaseA)}&disease_b=${encodeURIComponent(diseaseB)}`
+    );
+    if (!resp.ok) throw new Error(`Lookalike API returned ${resp.status}`);
+    return await resp.json();
   }
 };
+

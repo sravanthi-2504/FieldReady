@@ -186,7 +186,47 @@ export interface TranslationDictionary {
   sync_now_btn: string;
   clear_data_btn: string;
   clear_confirm_text: string;
+
+  // Verified Pesticide & IDM Management
+  pesticide_heading: string;
+  pesticide_verified_badge: string;
+  pesticide_withheld_badge: string;
+  pesticide_healthy_badge: string;
+  pesticide_statutory_warning: string;
+  pesticide_dose_per_liter: string;
+  pesticide_rate_per_acre: string;
+  pesticide_phi: string;
+  pesticide_rei: string;
+  pesticide_ppe: string;
+  pesticide_precautions: string;
+  pesticide_source_label: string;
+
+  // Lookalike Rust Differentiation
+  lookalike_heading: string;
+  lookalike_subheading: string;
+  lookalike_common_rust: string;
+  lookalike_southern_rust: string;
+  lookalike_pustule_location: string;
+  lookalike_pustule_morphology: string;
+  lookalike_favorable_temp: string;
+  lookalike_favorable_humidity: string;
+  lookalike_rub_test: string;
+  lookalike_model_status: string;
+
+  // Multi-Leaf Plant Assessment
+  plant_assessment_title: string;
+  plant_total_leaves: string;
+  plant_valid_leaves: string;
+  plant_excluded_leaves: string;
+  plant_consensus_title: string;
+  plant_disagreement_alert: string;
+  plant_leaf_num: string;
+  plant_capture_add_leaf: string;
+  plant_mode_single: string;
+  plant_mode_multi: string;
+  plant_assess_btn: string;
 }
+
 
 export const translations: Record<SupportedLanguage, TranslationDictionary> = {
   te: {
@@ -358,8 +398,45 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
     pending_records_count: "సింక్ కావలసిన రికార్డులు",
     sync_now_btn: "ఇప్పుడే సర్వర్‌తో సింక్ చేయండి",
     clear_data_btn: "డేటాను క్లియర్ చేయండి",
-    clear_confirm_text: "మీ పరికరంలోని సేవ్ చేసిన అన్ని రికార్డులు తొలగించబడతాయి. కొనసాగించాలా?"
+    clear_confirm_text: "మీ పరికరంలోని సేవ్ చేసిన అన్ని రికార్డులు తొలగించబడతాయి. కొనసాగించాలా?",
+
+    pesticide_heading: "ధృవీకరించబడిన సస్యరక్షణ మార్గదర్శకాలు (CIBRC / ICAR-IIMR)",
+    pesticide_verified_badge: "CIBRC రిజిస్టర్డ్",
+    pesticide_withheld_badge: "రసాయనాలు నిలిపివేయబడ్డాయి (అనిశ్చిత ఫలితం)",
+    pesticide_healthy_badge: "రసాయన మందులు అవసరం లేదు",
+    pesticide_statutory_warning: "చట్టబద్ధమైన హెచ్చరిక: లేబుల్ సూచనల ప్రకారం మాత్రమే రసాయనాలు వాడాలి. సరైన రక్షణ దుస్తులు (PPE) ధరించండి మరియు రక్షిత కాలపరిమితి (PHI) పాటించండి.",
+    pesticide_dose_per_liter: "లీటరు నీటికి మోతాదు:",
+    pesticide_rate_per_acre: "ఎకరానికి మోతాదు:",
+    pesticide_phi: "కోతకు ముందు నిరీక్షణ సమయం (PHI):",
+    pesticide_rei: "తిరిగి పొలంలోకి ప్రవేశించే సమయం (REI):",
+    pesticide_ppe: "వ్యక్తిగత రక్షణ పరికరాలు (PPE):",
+    pesticide_precautions: "పర్యావరణ జాగ్రత్తలు:",
+    pesticide_source_label: "ధృవీకరణ అధికారం:",
+
+    lookalike_heading: "కుంకుమ తెగుళ్ల తేడాలు: కామన్ రస్ట్ వర్సెస్ సదరన్ రస్ట్",
+    lookalike_subheading: "ఆకు లక్షణాలు మరియు వాతావరణ ఆధారంగా పోలిక",
+    lookalike_common_rust: "సాధారణ కుంకుమ తెగులు (Puccinia sorghi)",
+    lookalike_southern_rust: "సదరన్ రస్ట్ (Puccinia polysora)",
+    lookalike_pustule_location: "మచ్చల ప్రదేశం:",
+    lookalike_pustule_morphology: "మచ్చల ఆకారం & రంగు:",
+    lookalike_favorable_temp: "అనుకూల ఉష్ణోగ్రత:",
+    lookalike_favorable_humidity: "తేమ అవసరం:",
+    lookalike_rub_test: "చేతి పరీక్ష (Rub Test): ఆకుపై వేలితో తుడిస్తే పొడి రాలితే కామన్ రస్ట్.",
+    lookalike_model_status: "మోడల్ స్థితి: ప్రస్తుత చెక్‌పాయింట్ 4 తరగతులపై శిక్షణ పొందింది; సదరన్ రస్ట్ ప్రమాణాలు ICAR విస్తరణ మార్గదర్శకాల ఆధారంగా అందించబడ్డాయి.",
+
+    plant_assessment_title: "మొత్తం మొక్క సమగ్ర అంచనా (మల్టీ-లీఫ్)",
+    plant_total_leaves: "సమర్పించిన మొత్తం ఆకులు:",
+    plant_valid_leaves: "విశ్లేషించిన సరైన ఆకులు:",
+    plant_excluded_leaves: "తిరస్కరించబడిన ఆకులు:",
+    plant_consensus_title: "మొక్క స్థాయి ఏకాభిప్రాయ నిర్ధారణ:",
+    plant_disagreement_alert: "హెచ్చరిక: ఆకుల మధ్య లక్షణాల తేడా ఉంది! వివిధ ఆకులు వేర్వేరు వ్యాధులను సూచిస్తున్నాయి.",
+    plant_leaf_num: "ఆకు",
+    plant_capture_add_leaf: "ఈ మొక్క నుండి మరొక ఆకు జోడించండి (+)",
+    plant_mode_single: "ఒకే ఆకు తనిఖీ",
+    plant_mode_multi: "మొక్క సమగ్ర తనిఖీ (బహుళ ఆకులు)",
+    plant_assess_btn: "మొక్క ఆరోగ్యాన్ని అంచనా వేయండి"
   },
+
   hi: {
     app_title: "फील्डरेडी",
     app_subtitle: "आवाज़-निर्देशित फसल स्वास्थ्य आसूचना",
@@ -529,8 +606,45 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
     pending_records_count: "सिंक होने बाकी रिकॉर्ड",
     sync_now_btn: "अभी सर्वर से सिंक करें",
     clear_data_btn: "डेटा साफ़ करें",
-    clear_confirm_text: "डिवाइस में सुरक्षित सभी रिकॉर्ड हट जाएँगे। क्या आप जारी रखना चाहते हैं?"
+    clear_confirm_text: "डिवाइस में सुरक्षित सभी रिकॉर्ड हट जाएँगे। क्या आप जारी रखना चाहते हैं?",
+
+    pesticide_heading: "सत्यापित पौध संरक्षण दिशानिर्देश (CIBRC / ICAR-IIMR)",
+    pesticide_verified_badge: "CIBRC पंजीकृत",
+    pesticide_withheld_badge: "दवाएं रोकी गईं (अनिश्चित परिणाम)",
+    pesticide_healthy_badge: "रासायनिक उपचार की आवश्यकता नहीं",
+    pesticide_statutory_warning: "वैधानिक चेतावनी: केवल आधिकारिक उत्पाद लेबल के अनुसार ही रसायन का प्रयोग करें। सुरक्षा उपकरण (PPE) पहनें और प्रतीक्षा अवधि (PHI) का पालन करें।",
+    pesticide_dose_per_liter: "प्रति लीटर पानी में मात्रा:",
+    pesticide_rate_per_acre: "प्रति एकड़ मात्रा:",
+    pesticide_phi: "तुड़ाई पूर्व प्रतीक्षा अवधि (PHI):",
+    pesticide_rei: "पुनः प्रवेश समय (REI):",
+    pesticide_ppe: "सुरक्षा उपकरण (PPE):",
+    pesticide_precautions: "पर्यावरणीय सावधानियां:",
+    pesticide_source_label: "सत्यापन प्राधिकरण:",
+
+    lookalike_heading: "रतुआ अंतर: कॉमन रस्ट बनाम सदर्न रस्ट",
+    lookalike_subheading: "पत्ती लक्षणों एवं मौसम के आधार पर तुलना",
+    lookalike_common_rust: "सामान्य रतुआ (Puccinia sorghi)",
+    lookalike_southern_rust: "दक्षिणी रतुआ (Puccinia polysora)",
+    lookalike_pustule_location: "फफोले की स्थिति:",
+    lookalike_pustule_morphology: "फफोले का आकार व रंग:",
+    lookalike_favorable_temp: "अनुकूल तापमान:",
+    lookalike_favorable_humidity: "आर्द्रता आवश्यकता:",
+    lookalike_rub_test: "उंगली से पोंछने का परीक्षण: उंगली पर पाउडर छूटे तो कॉमन रस्ट।",
+    lookalike_model_status: "मॉडल स्थिति: वर्तमान मॉडल 4 वर्गों पर प्रशिक्षित है; सदर्न रस्ट मानदंड ICAR विस्तार दिशानिर्देशों द्वारा प्रदान किए गए हैं।",
+
+    plant_assessment_title: "पौधे का समग्र मूल्यांकन (मल्टी-लीफ)",
+    plant_total_leaves: "कुल जांची गई पत्तियां:",
+    plant_valid_leaves: "सत्यापित पत्तियां:",
+    plant_excluded_leaves: "अस्वीकृत पत्तियां:",
+    plant_consensus_title: "पौधा स्तर आम सहमति निदान:",
+    plant_disagreement_alert: "चेतावनी: पत्तियों में लक्षणों का अंतर है! विभिन्न पत्तियां अलग-अलग रोग दर्शा रही हैं।",
+    plant_leaf_num: "पत्ती",
+    plant_capture_add_leaf: "इस पौधे की अन्य पत्ती जोड़ें (+)",
+    plant_mode_single: "एकल पत्ती जांच",
+    plant_mode_multi: "पौधा समग्र जांच (एकाधिक पत्तियां)",
+    plant_assess_btn: "पौधे का समग्र स्वास्थ्य आंकें"
   },
+
   en: {
     app_title: "FieldReady",
     app_subtitle: "Voice-Guided Crop Health Intelligence",
@@ -700,6 +814,43 @@ export const translations: Record<SupportedLanguage, TranslationDictionary> = {
     pending_records_count: "Pending Records Awaiting Sync",
     sync_now_btn: "Sync to Server Now",
     clear_data_btn: "Reset Local Storage",
-    clear_confirm_text: "All local field and inspection records will be erased. Are you sure?"
+    clear_confirm_text: "All local field and inspection records will be erased. Are you sure?",
+
+    pesticide_heading: "Verified Disease & Pesticide Management (CIBRC / ICAR-IIMR)",
+    pesticide_verified_badge: "CIBRC Registered",
+    pesticide_withheld_badge: "Chemicals Withheld (Uncertain Diagnosis)",
+    pesticide_healthy_badge: "No Pesticide Required",
+    pesticide_statutory_warning: "Statutory Warning: Chemical recommendations are derived strictly from CIBRC registered labels and ICAR-IIMR protocols. Read product label before use. Follow exact PPE and disposal instructions.",
+    pesticide_dose_per_liter: "Dose per Liter:",
+    pesticide_rate_per_acre: "Rate per Acre:",
+    pesticide_phi: "Pre-Harvest Interval (PHI):",
+    pesticide_rei: "Re-Entry Interval (REI):",
+    pesticide_ppe: "Required PPE:",
+    pesticide_precautions: "Environmental Precautions:",
+    pesticide_source_label: "Verification Authority:",
+
+    lookalike_heading: "Maize Rust Differential: Common Rust vs. Southern Rust",
+    lookalike_subheading: "Side-by-side morphological & epidemiological diagnostic criteria",
+    lookalike_common_rust: "Common Rust (Puccinia sorghi)",
+    lookalike_southern_rust: "Southern Rust (Puccinia polysora)",
+    lookalike_pustule_location: "Pustule Distribution:",
+    lookalike_pustule_morphology: "Morphology & Color:",
+    lookalike_favorable_temp: "Favorable Temperature:",
+    lookalike_favorable_humidity: "Humidity / Wetness:",
+    lookalike_rub_test: "Field Rub Test: Pustules wipe off easily as powdery reddish-brown spore dust on Common Rust.",
+    lookalike_model_status: "Model Status: The active checkpoint is trained on 4 certified classes. Southern Rust differentiation criteria are derived from ICAR-IIMR extension compendiums.",
+
+    plant_assessment_title: "Whole-Plant Health Assessment (Multi-Leaf)",
+    plant_total_leaves: "Total Leaves Submitted:",
+    plant_valid_leaves: "Valid Leaves Analyzed:",
+    plant_excluded_leaves: "Leaves Excluded (Quality/Gate):",
+    plant_consensus_title: "Plant-Level Consensus Verdict:",
+    plant_disagreement_alert: "Disagreement Detected: Leaves from this plant exhibit conflicting symptoms. Field inspection recommended before any treatment.",
+    plant_leaf_num: "Leaf",
+    plant_capture_add_leaf: "Add Another Leaf From This Plant (+)",
+    plant_mode_single: "Single Leaf Check",
+    plant_mode_multi: "Whole Plant Assessment",
+    plant_assess_btn: "Assess Plant Health"
   }
 };
+

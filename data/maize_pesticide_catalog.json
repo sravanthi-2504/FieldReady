@@ -1,0 +1,289 @@
+{
+  "catalog_version": "1.0.0",
+  "country": "India",
+  "regulatory_framework": "Central Insecticides Board & Registration Committee (CIBRC) & ICAR-Indian Institute of Maize Research (IIMR)",
+  "verification_authority": "Directorate of Plant Protection, Quarantine & Storage (PPQS) & ICAR-IIMR Guidelines",
+  "last_reviewed_date": "2026-10-10",
+  "disclaimer": "Pesticide recommendations are strictly rule-based and derived from verified CIBRC registered uses and official ICAR-IIMR extension advisories for India. Always verify local product availability, read the registered product label before use, and adhere strictly to specified Personal Protective Equipment (PPE), Pre-Harvest Intervals (PHI), and safety precautions.",
+  "diseases": {
+    "common_rust": {
+      "scientific_name": "Puccinia sorghi",
+      "disease_name": {
+        "en": "Common Rust",
+        "te": "మొక్కజొన్న కుంకుమ తెగులు (కామన్ రస్ట్)",
+        "hi": "सामान्य रतुआ (कॉमन रस्ट)"
+      },
+      "symptom_distinction": {
+        "en": "Oval to elongated, cinnamon-brown to dark-brown pustules scattered across BOTH upper and lower leaf surfaces. Favors cool temperatures (16–25°C) and high humidity.",
+        "te": "ఆకు పైభాగం మరియు అడుగు భాగం రెండింటిపై దాల్చిన చెక్క రంగు నుండి ముదురు గోధుమ రంగులో పొడుగుటి కురుపులు/మచ్చలు. చల్లని ఉష్ణోగ్రతలు (16-25°C) మరియు అధిక తేమలో వేగంగా వస్తుంది.",
+        "hi": "पत्ती की दोनों सतहों (ऊपरी और निचली) पर दालचीनी जैसे भूरे रंग के उभरे हुए फफोले। यह ठंडे तापमान (16-25°C) और अधिक आर्द्रता में पनपता है।"
+      },
+      "chemical_interventions": [
+        {
+          "id": "PEST-CR-01",
+          "product_name": "Mancozeb 75% WP",
+          "active_ingredient": "Mancozeb 75% WP",
+          "category": "Contact Fungicide (Dithiocarbamate, FRAC M03)",
+          "registration_status": "registered",
+          "verification_source": "CIBRC Major Uses of Pesticides (Registered for Maize)",
+          "source_url": "https://cibrc.gov.in/major-uses-of-pesticides",
+          "verification_date": "2026-10-10",
+          "recommended_rate": "1.5 - 2.0 kg/ha (2.0 - 2.5 g/L water)",
+          "rate_per_acre": "600 - 800 g / acre in 200 L water",
+          "application_method": "High-volume foliar spray covering both upper and lower leaf canopies.",
+          "application_timing": "Initiate spray at the first appearance of pustules. Repeat after 10–14 days if cool, damp weather persists.",
+          "growth_stage_restrictions": "Do not apply past the late dough / dent stage.",
+          "pre_harvest_interval_days": 20,
+          "re_entry_interval_hours": 24,
+          "ppe_requirements": [
+            "Wear protective chemical-resistant gloves (nitrile)",
+            "Wear N95 or equivalent dust/mist respirator mask",
+            "Wear safety goggles or face shield",
+            "Wear long-sleeved shirt, trousers, and rubber boots"
+          ],
+          "environmental_precautions": "Toxic to aquatic organisms. Do not spray near water bodies or during high wind conditions."
+        },
+        {
+          "id": "PEST-CR-02",
+          "product_name": "Azoxystrobin 18.2% + Difenoconazole 11.4% SC",
+          "active_ingredient": "Azoxystrobin 18.2% + Difenoconazole 11.4% SC",
+          "category": "Systemic Broad-Spectrum Dual Fungicide (FRAC 11 + FRAC 3)",
+          "registration_status": "registered",
+          "verification_source": "CIBRC Registered Combination Products & ICAR-IIMR Protocol",
+          "source_url": "https://cibrc.gov.in/major-uses-of-pesticides",
+          "verification_date": "2026-10-10",
+          "recommended_rate": "1.0 mL / L water (500 mL / ha)",
+          "rate_per_acre": "200 mL / acre in 200 L water",
+          "application_method": "Foliar spray with uniform canopy coverage.",
+          "application_timing": "Apply when pustules are observed on ear leaf or leaves below ear prior to tasseling.",
+          "growth_stage_restrictions": "Maximum 2 applications per crop cycle to prevent fungicide resistance development.",
+          "pre_harvest_interval_days": 21,
+          "re_entry_interval_hours": 24,
+          "ppe_requirements": [
+            "Wear protective chemical-resistant gloves",
+            "Wear particulate respirator and eye goggles",
+            "Wash hands and face thoroughly after handling"
+          ],
+          "environmental_precautions": "High toxicity to aquatic invertebrates. Prevent runoff into drainage channels."
+        }
+      ],
+      "integrated_disease_management": [
+        "Select and plant resistant single-cross maize hybrids recommended by regional agricultural universities.",
+        "Avoid late planting; early sowing allows the crop to bypass peak cool-season rust sporulation.",
+        "Maintain balanced fertilizer application (avoid excessive nitrogen which promotes lush, susceptible tissue).",
+        "Deep plow crop residues after harvest to bury fungal overwintering inoculum."
+      ]
+    },
+    "southern_rust": {
+      "scientific_name": "Puccinia polysora",
+      "disease_name": {
+        "en": "Southern Rust",
+        "te": "సదరన్ రస్ట్ (దక్షిణ కుంకుమ తెగులు)",
+        "hi": "दक्षिणी रतुआ (सदर्न रस्ट)"
+      },
+      "symptom_distinction": {
+        "en": "Tiny, circular, golden-orange to light cinnamon-brown pustules, densely clustered PREDOMINANTLY on the UPPER leaf surface. Favors warm to hot temperatures (25–35°C) and prolonged high humidity.",
+        "te": "చాలా చిన్నవి, గుండ్రని, బంగారు-నారింజ రంగు నుండి తేలికపాటి గోధుమ రంగు కురుపులు, ప్రధానంగా ఆకు పైభాగంలో మాత్రమే దట్టంగా ఉంటాయి. వెచ్చని/వేడి వాతావరణం (25-35°C) మరియు తేమలో వేగంగా వ్యాపిస్తుంది.",
+        "hi": "छोटे, गोल, सुनहरे-नारंगी से हल्के दालचीनी रंग के फफोले, जो मुख्य रूप से पत्ती की केवल ऊपरी सतह पर घने रूप में पाए जाते हैं। यह गर्म तापमान (25-35°C) और अधिक नमी में अत्यंत तेजी से फैलता है।"
+      },
+      "chemical_interventions": [
+        {
+          "id": "PEST-SR-01",
+          "product_name": "Azoxystrobin 18.2% + Difenoconazole 11.4% SC",
+          "active_ingredient": "Azoxystrobin 18.2% + Difenoconazole 11.4% SC",
+          "category": "Systemic Fungicide (FRAC 11 + FRAC 3)",
+          "registration_status": "registered",
+          "verification_source": "CIBRC & ICAR-IIMR Protocol for Severe Cereal Rusts",
+          "source_url": "https://cibrc.gov.in/major-uses-of-pesticides",
+          "verification_date": "2026-10-10",
+          "recommended_rate": "1.0 mL / L water (500 mL / ha)",
+          "rate_per_acre": "200 mL / acre in 200 L water",
+          "application_method": "Thorough foliar spray targeted at upper canopy leaves.",
+          "application_timing": "Southern rust is aggressive under high temperatures; apply promptly at first detection before pustules engulf the upper canopy.",
+          "growth_stage_restrictions": "Do not apply within 21 days of grain harvest.",
+          "pre_harvest_interval_days": 21,
+          "re_entry_interval_hours": 24,
+          "ppe_requirements": [
+            "Wear chemical-resistant gloves",
+            "Wear protective mask and goggles",
+            "Wash equipment and wash contaminated clothes separately"
+          ],
+          "environmental_precautions": "Keep away from ponds, fish farms, and water reservoirs."
+        },
+        {
+          "id": "PEST-SR-02",
+          "product_name": "Pyraclostrobin 20% WG",
+          "active_ingredient": "Pyraclostrobin 20% WG",
+          "category": "QoI Strobilurin Fungicide (FRAC 11)",
+          "registration_status": "extension_recommended",
+          "verification_source": "ICAR-IIMR & State Agricultural Universities Extension Guidance (Pending direct standalone CIBRC maize label claim verification)",
+          "source_url": "https://iimr.icar.gov.in/",
+          "verification_date": "2026-10-10",
+          "recommended_rate": "500 g / ha (1.0 g / L water)",
+          "rate_per_acre": "200 g / acre in 200 L water",
+          "application_method": "Foliar spray with fine droplet mist.",
+          "application_timing": "Preventative or very early curative spray upon alert of regional southern rust arrival.",
+          "growth_stage_restrictions": "Do not apply more than 2 sprays per season.",
+          "pre_harvest_interval_days": 28,
+          "re_entry_interval_hours": 24,
+          "ppe_requirements": [
+            "Full protective clothing, chemical apron, respirator, and gloves"
+          ],
+          "environmental_precautions": "Extremely toxic to aquatic life. Strictly observe buffer zones near water channels."
+        }
+      ],
+      "integrated_disease_management": [
+        "Grow hybrids with genetic resistance (Rpp resistance genes) when planting in known southern-rust corridors.",
+        "Timely planting is critical: early-planted crops often mature before southern rust airborne spores arrive from warmer southern zones.",
+        "Daily scouting during tasseling and silking under warm, humid forecast windows (temp >27°C).",
+        "Avoid overhead sprinkler irrigation late in the afternoon to reduce night-time leaf wetness duration."
+      ]
+    },
+    "northern_leaf_blight": {
+      "scientific_name": "Exserohilum turcicum",
+      "disease_name": {
+        "en": "Northern Corn Leaf Blight",
+        "te": "నార్తర్న్ లీఫ్ బ్లైట్ (ఆకు ఎండు తెగులు)",
+        "hi": "उत्तरी पत्ती झुलसा (नार्दर्न लीफ ब्लाइट)"
+      },
+      "symptom_distinction": {
+        "en": "Long, elliptical, grayish-green to tan cigar-shaped lesions (2.5–15 cm long) with distinct margins. Favors moderate temperatures (18–27°C) and heavy dew.",
+        "te": "సిగార్ ఆకారంలో పొడవాటి (2.5 - 15 సెం.మీ) బూడిద-గోధుమ రంగు మచ్చలు. మితమైన ఉష్ణోగ్రతలు (18-27°C) మరియు మంచు/తేమ ఉన్నప్పుడు ఎక్కువగా వస్తుంది.",
+        "hi": "लंबे, सिगार के आकार के (2.5-15 सेमी) धूसर-भूरे रंग के बड़े धब्बे। यह 18-27°C तापमान और ओस/नमी में तेजी से बढ़ता है।"
+      },
+      "chemical_interventions": [
+        {
+          "id": "PEST-NLB-01",
+          "product_name": "Mancozeb 75% WP",
+          "active_ingredient": "Mancozeb 75% WP",
+          "category": "Contact Protectant (FRAC M03)",
+          "registration_status": "registered",
+          "verification_source": "CIBRC & ICAR-IIMR Disease Management Protocol",
+          "source_url": "https://cibrc.gov.in/major-uses-of-pesticides",
+          "verification_date": "2026-10-10",
+          "recommended_rate": "2.0 - 2.5 g / L water (1.5 - 2.0 kg / ha)",
+          "rate_per_acre": "600 - 800 g / acre in 200 L water",
+          "application_method": "Foliar spray with uniform leaf coverage.",
+          "application_timing": "Apply at first sign of cigar-shaped lesions on lower leaves.",
+          "growth_stage_restrictions": "Do not spray within 20 days of harvest.",
+          "pre_harvest_interval_days": 20,
+          "re_entry_interval_hours": 24,
+          "ppe_requirements": [
+            "Wear protective gloves, face mask, and eye protection"
+          ],
+          "environmental_precautions": "Avoid spray drift into open waterways."
+        },
+        {
+          "id": "PEST-NLB-02",
+          "product_name": "Azoxystrobin 18.2% + Difenoconazole 11.4% SC",
+          "active_ingredient": "Azoxystrobin 18.2% + Difenoconazole 11.4% SC",
+          "category": "Systemic Fungicide (FRAC 11 + FRAC 3)",
+          "registration_status": "registered",
+          "verification_source": "CIBRC & ICAR-IIMR Protocol",
+          "source_url": "https://cibrc.gov.in/major-uses-of-pesticides",
+          "verification_date": "2026-10-10",
+          "recommended_rate": "1.0 mL / L water (200 mL / acre)",
+          "rate_per_acre": "200 mL / acre in 200 L water",
+          "application_method": "Foliar spray.",
+          "application_timing": "Apply at early lesion development before blight ascends to the ear leaf.",
+          "growth_stage_restrictions": "Maximum 2 applications per season.",
+          "pre_harvest_interval_days": 21,
+          "re_entry_interval_hours": 24,
+          "ppe_requirements": [
+            "Chemical-resistant gloves, protective eye goggles, dust/mist mask"
+          ],
+          "environmental_precautions": "Toxic to fish and aquatic life."
+        }
+      ],
+      "integrated_disease_management": [
+        "Plant resistant maize hybrids certified by ICAR-IIMR or State Agricultural Universities.",
+        "Rotate fields with non-host crops (pulses, legumes, or oilseeds) for at least 1–2 cropping seasons.",
+        "Deep plowing of field stubble immediately after harvest to accelerate decomposition of overwintering fungal structures.",
+        "Ensure optimal plant density (60 cm × 20 cm) to facilitate sunlight penetration and rapid foliage drying."
+      ]
+    },
+    "gray_leaf_spot": {
+      "scientific_name": "Cercospora zeae-maydis",
+      "disease_name": {
+        "en": "Gray Leaf Spot",
+        "te": "బూడిద రంగు మచ్చ తెగులు (గ్రే లీఫ్ స్పాట్)",
+        "hi": "धूसर पत्ती धब्बा (ग्रे लीफ स्पॉट)"
+      },
+      "symptom_distinction": {
+        "en": "Narrow, rectangular, block-like lesions with parallel sides strictly bounded by leaf veins. Favors warm temperatures (25–32°C) and persistent high relative humidity (>90%).",
+        "te": "ఆకు ఈనెల మధ్య నిలువు వరుసలలో చతురస్రాకారపు/దీర్ఘచతురస్రాకారపు బూడిద రంగు మచ్చలు. వేడి వాతావరణం (25-32°C) మరియు అధిక తేమ (>90%) ఉన్నప్పుడు వ్యాపిస్తుంది.",
+        "hi": "पत्ती की नसों के बीच सीमित, आयताकार भूरे-धूसर धब्बे। यह गर्म तापमान (25-32°C) और लगातार उच्च आर्द्रता (>90%) में फैलता है।"
+      },
+      "chemical_interventions": [
+        {
+          "id": "PEST-GLS-01",
+          "product_name": "Azoxystrobin 18.2% + Difenoconazole 11.4% SC",
+          "active_ingredient": "Azoxystrobin 18.2% + Difenoconazole 11.4% SC",
+          "category": "Systemic Fungicide (FRAC 11 + FRAC 3)",
+          "registration_status": "registered",
+          "verification_source": "CIBRC & ICAR-IIMR Maize Protection Manual",
+          "source_url": "https://cibrc.gov.in/major-uses-of-pesticides",
+          "verification_date": "2026-10-10",
+          "recommended_rate": "1.0 mL / L water (200 mL / acre)",
+          "rate_per_acre": "200 mL / acre in 200 L water",
+          "application_method": "Foliar spray with motorized knapsack or tractor-mounted boom sprayer.",
+          "application_timing": "Apply at the first appearance of rectangular lesions on lower canopy, before infection reaches the ear leaf.",
+          "growth_stage_restrictions": "Do not apply during full pollination or within 21 days of harvest.",
+          "pre_harvest_interval_days": 21,
+          "re_entry_interval_hours": 24,
+          "ppe_requirements": [
+            "Wear chemical-resistant gloves, safety mask, and goggles"
+          ],
+          "environmental_precautions": "Do not spray near fish ponds or open irrigation water."
+        },
+        {
+          "id": "PEST-GLS-02",
+          "product_name": "Carbendazim 50% WP",
+          "active_ingredient": "Carbendazim 50% WP",
+          "category": "Systemic Benzimidazole Fungicide (FRAC 1)",
+          "registration_status": "extension_recommended",
+          "verification_source": "State Agricultural Universities Crop Protection Guidelines (Check local state restrictions)",
+          "source_url": "https://iimr.icar.gov.in/",
+          "verification_date": "2026-10-10",
+          "recommended_rate": "1.0 g / L water",
+          "rate_per_acre": "200 g / acre in 200 L water",
+          "application_method": "Foliar spray.",
+          "application_timing": "Curative spray at onset of rectangular lesions.",
+          "growth_stage_restrictions": "Do not apply more than once per season to prevent pathogen resistance.",
+          "pre_harvest_interval_days": 25,
+          "re_entry_interval_hours": 24,
+          "ppe_requirements": [
+            "Protective gloves, mask, and apron"
+          ],
+          "environmental_precautions": "Follow strict water hazard safety warnings."
+        }
+      ],
+      "integrated_disease_management": [
+        "Rotate crops: Cercospora fungus overwinters exclusively in corn residue; crop rotation breaks pathogen cycle.",
+        "Incorporate or destroy infected stubble post-harvest to reduce fungal sporulation source.",
+        "Ensure recommended plant spacing to avoid dense canopy humidity traps.",
+        "Plant resistant maize hybrids recommended for your agro-climatic zone."
+      ]
+    },
+    "healthy": {
+      "scientific_name": "Zea mays (Healthy)",
+      "disease_name": {
+        "en": "Healthy Crop",
+        "te": "ఆరోగ్యకరమైన పంట",
+        "hi": "स्वस्थ फसल"
+      },
+      "symptom_distinction": {
+        "en": "Normal green foliage with no active fungal or bacterial lesions.",
+        "te": "తెగుళ్ల లక్షణాలు లేని ఆరోగ్యకరమైన ఆకు పచ్చని మొక్క.",
+        "hi": "रोगमुक्त, सामान्य हरी पत्ती।"
+      },
+      "chemical_interventions": [],
+      "integrated_disease_management": [
+        "No chemical or fungicide application is needed or recommended.",
+        "Maintain periodic scouting every 7–10 days across multiple field locations.",
+        "Ensure balanced soil-tested fertilization and avoid water stagnation.",
+        "Monitor weather forecasts for sudden high-humidity or continuous overcast windows."
+      ]
+    }
+  }
+}
